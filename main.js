@@ -232,19 +232,21 @@ on('roundEnd', async (isCorrect, points) => {
   // Espera 2 segundos e passa para a próxima ronda
   await new Promise(r => setTimeout(r, 2000));
 
-  if (getState().lives > 0) {
+  if (getState().lives <= 0) {
+    playSound('gameover');
+    const s = getState();
+    document.getElementById('gameover-title').textContent = 'Fim de Jogo!';
+    document.getElementById('gameover-score').textContent = `Pontuação: ${s.score} pontos`;
+    document.getElementById('gameover-stats').textContent = `Acertos: ${s.hits} | Melhor streak: ${s.maxStreak}`;
+    showScreen('screen-gameover');
+  }else {
     await nextRound();
   }
 });
 
 // Chamado pelo motor quando o jogo termina
 on('gameOver', () => {
-  const s = getState();
-  document.getElementById('gameover-title').textContent = 'Fim de Jogo!';
-  document.getElementById('gameover-score').textContent = `Pontuação: ${s.score} pontos`;
-  document.getElementById('gameover-stats').textContent = `Acertos: ${s.hits} | Melhor streak: ${s.maxStreak}`;
-  showScreen('screen-gameover');
-  playSound('gameover');
+  //tratado no roundend para mostar feedback antes
 });
 
 // Histórico
