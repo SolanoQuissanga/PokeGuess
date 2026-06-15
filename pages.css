@@ -1,0 +1,154 @@
+/* VARIÁVEIS */
+:root {
+  --bg: #0d0d1a;
+  --surface: #1a1a2e;
+  --border: #2e2e50;
+  --primary: #ffcb05;
+  --accent: #3d7dca;
+  --text: #f0f0f0;
+  --muted: #8888aa;
+}
+
+/* RESET */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* NAVEGAÇÃO */
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 2rem;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.logo {
+  color: var(--primary);
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+nav ul {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+nav ul a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+nav ul a:hover {
+  color: var(--primary);
+}
+
+/* MAIN */
+main {
+  flex: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 100%;
+}
+
+/* HERO */
+.hero {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+.btn {
+  background: var(--primary);
+  color: #000;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: filter 0.2s;
+}
+
+.btn:hover { filter: brightness(1.2); }
+
+/* CARDS DOS MODOS */
+.modos { padding: 2rem 0; }
+
+.modos h2 {
+  font-size: 1.8rem;
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* CSS GRID para os cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.card h3 {
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.card p { color: var(--muted); }
+
+/* RODAPÉ */
+footer {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 1rem 2rem;
+  text-align: center;
+  color: var(--muted);
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+footer a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+footer a:hover { color: var(--primary); }
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  nav ul { display: none; }
+  .hero h1 { font-size: 2rem; }
+}
