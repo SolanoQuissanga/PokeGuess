@@ -95,3 +95,51 @@ button:hover { transform: translateY(-2px); filter: brightness(1.2); }
 #btn-start, #btn-submit {
   background: var(--primary);
   color: #000;
+
+/* PSEUDO-ELEMENTOS */
+#btn-start::before {
+  content: '> ';
+}
+
+#screen-gameover h1::after {
+  content: '...';
+}
+
+/* MEDIA QUERIES - responsive */
+@media (max-width: 768px) {
+  #game-area {
+    flex-direction: column;
+  }
+
+  #game-right {
+    min-width: 100%;
+  }
+
+  #poke-img {
+    width: 180px;
+  }
+
+  nav ul {
+    display: none;
+  }
+
+  #hud {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .screen {
+    padding: 1rem;
+  }
+
+  #screen-start h1 {
+    font-size: 1.8rem;
+  }
+
+  button {
+    width: 100%;
+  }
+}
