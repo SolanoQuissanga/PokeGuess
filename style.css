@@ -68,7 +68,8 @@ button:hover {
     font-weight: bold;
 }
 
-#btn-history {
+#btn-history, #btn-back-history, #btn-export-csv,
+#btn-play-again, #btn-menu, #btn-quit {
     background: var(--surface);
     color: var(--text);
     border: 2px solid var(--border);
