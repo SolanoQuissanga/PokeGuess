@@ -40,7 +40,7 @@
   <!-- ECRÃ DE JOGO -->
   <div id="screen-game" class="screen">
     <div id="hud">
-      <span>Vidas: <span id="lives">3</span></span>
+      <span>Vidas: <span id="lives">3 vidas</span></span>
       <span>Pontos: <span id="score">0</span></span>
       <span>Streak: <span id="streak">0</span></span>
     </div>
@@ -51,10 +51,9 @@
 
     <span id="timer-text">--s</span>
 
-    <div id="game-content">
-      <!-- O conteúdo muda conforme o modo -->
-    </div>
-
+    <div id="game-area">
+    <div id="game-content"></div>
+    <div id="game-right">
     <div id="answer-zone">
       <input type="text" id="answer-input" placeholder="Nome do Pokémon..." autocomplete="off">
       <button id="btn-submit">Responder(Enter)</button>
@@ -64,6 +63,8 @@
     <div id="feedback" class="hidden"></div>
 
     <button id="btn-quit">Abandonar</button>
+      </div>
+    </div>
   </div>
 
   <!-- ECRÃ DE HISTÓRICO -->
