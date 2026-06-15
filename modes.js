@@ -1,140 +1,149 @@
-// modes.js - Os 4 modos de jogo
-
-// converte as gerações
-function getGenNumber(species) {
-  const roman = species.generation.name.split('-')[1].toUpperCase();
-  const map = { I:1, II:2, III:3, IV:4, V:5, VI:6, VII:7, VIII:8, IX:9 };
-  return map[roman];
-}
-
-// Evoluções
-function flattenChain(node, result = []) {
-  result.push(node.species.name);
-  for (const next of node.evolves_to){
-flattenChain(next, result);
- }
- return result;
-}
-
-//Obtém a imagem do pokémon
-function getSprite(pokemon) {
-  return pokemon.sprites.other['official-artwork'].front_default
-      || pokemon.sprites.front_default;
-}
-
 // MODO 1: SILHUETA
-//iamgem do pokemon a preto
+// Mostra a imagem do Pokémon a preto (filter:brightness(0))
 function setupSilhouette(pokemon) {
+  const img = getSprite(pokemon);
+
   document.getElementById('game-content').innerHTML = `
     <div style="text-align:center">
-      <img id="poke-img" src="${getSprite(pokemon)}" style="width:180px; filter:brightness(0)">
+      <img id="poke-img" src="${img}" style="width:180px; filter:brightness(0)">
+      <div id="hints"></div>
     </div>
   `;
 }
 
-//remove o filtro
+// Remove o filtro preto e revela o Pokémon
 function revealPokemon() {
   const img = document.getElementById('poke-img');
   if (img) img.style.filter = 'brightness(1)';
 }
 
-//devolve uma pista 
+// Devolve a pista certa conforme quantas já foram usadas
 function getHintSilhouette(pokemon, species, hintsUsed) {
   const hints = [
     `Primeira letra: <b>${pokemon.name[0].toUpperCase()}</b>`,
     `Número de letras: <b>${pokemon.name.length}</b>`,
     `Geração: <b>${getGenNumber(species)}</b>`,
   ];
-  return hints[hintsUsed] || null;
+  return hints[hintsUsed] || null; // null = sem mais pistas
 }
 
 // MODO 2: ESTATÍSTICAS
-//mostra as stats sem revelar o nome
+// Mostra as stats do Pokémon sem revelar o nome
 function setupStats(pokemon) {
-  const nomes = { 
-    hp:'HP', 
-    attack:'Ataque', 
-    defense:'Defesa',
-    'special-attack':'Atq. Esp.',
-    'special-defense':'Def. Esp.',
-     speed:'Velocidade' 
-    };
+  // Tradução dos nomes das stats
+  const nomes = {
+    hp: 'HP',
+    attack: 'Ataque',
+    defense: 'Defesa',
+    'special-attack': 'Atq. Especial',
+    'special-defense': 'Def. Especial',
+    speed: 'Velocidade'
+  };
 
-//cria uma linha por stat
+  // Cria uma linha por cada stat
   const rows = pokemon.stats.map(s =>
-    `<p>${nomes[s.stat.name]}: <b>${s.base_stat}</b></p>`
+    `<p style="display:flex; justify-content:space-between; padding:0.3rem 0; border-bottom:1px solid #2e2e50">
+      <span>${nomes[s.stat.name]}</span>
+      <b>${s.base_stat}</b>
+    </p>`
   ).join('');
 
-  document.getElementById('game-content').innerHTML = rows;
+  document.getElementById('game-content').innerHTML = `
+    <div style="width:100%">
+      ${rows}
+      <div id="hints" style="margin-top:1rem"></div>
+    </div>
+  `;
 }
 
-// uma pista por tipo de pokemon
+// A única pista disponível é o tipo do Pokémon
 function getHintStats(pokemon, hintsUsed) {
   if (hintsUsed === 0) {
-    return `Tipo(s): <b>${pokemon.types.map(t => t.type.name).join(', ')}</b>`;
+    const tipos = pokemon.types.map(t => t.type.name).join(', ');
+    return `Tipo(s): <b>${tipos}</b>`;
   }
-  return null;
+  return null; // sem mais pistas
 }
 
 // MODO 3: TIPO + GERAÇÃO
-//mostra tipo e geração + 4 opções de resposta
+// Mostra o tipo e geração e dá 4 opções de resposta
 function setupTypeGen(pokemon, species, pool) {
+  // Esconde o input de texto (não precisamos neste modo)
   document.getElementById('answer-zone').style.display = 'none';
 
-  //escolhe 3 pokemon errados random 
-  const wrong = pool.filter(n => n !== pokemon.name)
-    .sort(() => Math.random() - 0.5).slice(0, 3);
+  const gen  = getGenNumber(species);
+  const tipo = pokemon.types.map(t => t.type.name).join(', ');
 
-  //junta o correto com errados  e mistura
-  const options = [pokemon.name, ...wrong].sort(() => Math.random() - 0.5);
+  // Escolhe 3 Pokémon errados aleatórios do pool
+  const errados = pool
+    .filter(n => n !== pokemon.name)
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 3);
 
-  //cria um botão por opção
-  const buttons = options.map(name =>
-    `<button onclick="handleChoice('${name}')" style="margin:0.3rem;padding:0.6rem 1rem;
-     border-radius:8px;background:#1a1a2e;color:#f0f0f0;border:2px solid #2e2e50;cursor:pointer">
-      ${name}
+  // Junta o correto com os errados e mistura
+  const opcoes = [pokemon.name, ...errados].sort(() => Math.random() - 0.5);
+
+  // Cria um botão por cada opção
+  const buttons = opcoes.map(nome =>
+    `<button 
+      onclick="handleChoice('${nome}')"
+      style="padding:0.6rem 1rem; margin:0.3rem; border-radius:8px;
+             background:#1a1a2e; color:#f0f0f0; border:2px solid #2e2e50; cursor:pointer">
+      ${nome}
     </button>`
   ).join('');
 
   document.getElementById('game-content').innerHTML = `
     <div style="text-align:center">
-      <p>Tipo: <b>${pokemon.types.map(t => t.type.name).join(', ')}</b> | Geração: <b>${getGenNumber(species)}</b></p>
+      <p>Tipo: <b>${tipo}</b> | Geração: <b>${gen}</b></p>
       <div style="margin-top:1rem">${buttons}</div>
     </div>
   `;
 }
 
-//chama qd o U clica numa opção
-function handleChoice(name) {
+// Chamada quando o jogador clica numa opção
+function handleChoice(nome) {
+  // Desativa todos os botões para não poder clicar de novo
   document.querySelectorAll('button').forEach(b => b.disabled = true);
-  submitChoice(name === getRound().pokemon.name);
+
+  const isCorrect = nome === getRound().pokemon.name;
+  submitChoice(isCorrect);
 }
 
 // MODO 4: CADEIA EVOLUTIVA
-//mostra um pokemon e qual é a evolução(antetior ou seguinte)
+// Mostra um Pokémon e pergunta qual é a forma anterior ou seguinte
 async function setupEvolution(pokemon, species) {
-  // cadeia evolutiva completa
+  // Obtém a cadeia evolutiva completa
   const chainData = await getEvolutionChain(species.evolution_chain.url);
   const chain = flattenChain(chainData.chain);
 
-  //encontra a posição do pokemon atual na cadeia
+  // Encontra a posição do Pokémon atual na cadeia
   const idx = chain.findIndex(n => n === pokemon.name);
-
-  if (idx === 0 && chain.length === 1) return { valid: false };
 
   const hasPrev = idx > 0;
   const hasNext = idx < chain.length - 1;
-  //se nao tem evo, é invalido - jogo sorteia outro
+
+  // Se não tem evoluções, é inválido — o jogo vai sortear outro
   if (!hasPrev && !hasNext) return { valid: false };
 
-  const direction = (hasPrev && hasNext) ? (Math.random() < 0.5 ? 'prev' : 'next')
-                  : hasPrev ? 'prev' : 'next';
+  // Decide se pergunta anterior ou seguinte
+  let direction;
+  if (hasPrev && hasNext) {
+    direction = Math.random() < 0.5 ? 'prev' : 'next';
+  } else {
+    direction = hasPrev ? 'prev' : 'next';
+  }
+
   const answer = direction === 'prev' ? chain[idx - 1] : chain[idx + 1];
+  const dirLabel = direction === 'prev' ? 'anterior' : 'seguinte';
 
   document.getElementById('game-content').innerHTML = `
     <div style="text-align:center">
       <img src="${getSprite(pokemon)}" style="width:150px">
-      <p style="margin-top:1rem">Forma <b>${direction === 'prev' ? 'anterior' : 'seguinte'}</b> de <b>${pokemon.name}</b>?</p>
+      <p style="margin-top:1rem">
+        Qual é a forma <b>${dirLabel}</b> de <b>${pokemon.name}</b>?
+      </p>
+      <div id="hints" style="margin-top:1rem"></div>
     </div>
   `;
 
