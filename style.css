@@ -1,0 +1,70 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg) ;
+    color: var(--text);
+    font-family: Arial;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Variáveis de cor e fonte */
+:root {
+    --bg: #0d0d1a;
+    --surface: #1a1a2e;
+    --border: #2e2e50;
+    --primary: #ffcb05;
+    --accent: #3d7dca;
+    --danger: #e74c3c;
+    --sucess: #2ecc71;
+    --text: #f0f0f0;
+    --muted: #8888aa;
+}
+
+/* Ecrâs */
+.screen {
+    display: none;
+    flex: auto;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 600px;
+    padding: 2rem;
+}
+
+.screen.active {
+    display: flex;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Botões */
+button {
+    padding: 0.6rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    /* trnsição - feedback visual ao passar rato */
+    transition: transform 0.2s, filter 0.2s
+}
+
+button:hover {
+    transform: translateY(-2px);
+    filter :brightness(1.2);
+}
+
+#btn-start {
+    background: var(--primary);
+    color: #000;
+    font-weight: bold;
+}
+
