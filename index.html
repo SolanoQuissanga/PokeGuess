@@ -1,95 +1,64 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="PokéGuess - Jogo de adivinha de Pokémon com pistas progressivas.">
-    <title>PokéGuess</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PokéGuess – Jogo de adivinha de Pokémon.">
+  <title>PokéGuess</title>
+  <link rel="stylesheet" href="css/pages.css">
 </head>
-
 <body>
 
-    <!-- ECRÃ INICIAL -->
-  <div id="screen-start" class="screen active">
-    <h1>PokéGuess</h1>
-    <p>Escolhe o modo de jogo:</p>
+  <header>
+    <nav>
+      <a href="index.html" class="logo">PokéGuess</a>
+      <ul>
+        <li><a href="index.html">Início</a></li>
+        <li><a href="jogo.html">Jogar</a></li>
+        <li><a href="sobre.html">Como Jogar</a></li>
+        <li><a href="ranking.html">Ranking</a></li>
+        <li><a href="pokedex.html">Pokédex</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <div>
-      <label><input type="radio" name="mode" value="silhouette" checked> Silhueta</label>
-      <label><input type="radio" name="mode" value="stats"> Estatísticas</label>
-      <label><input type="radio" name="mode" value="typegen"> Tipo + Geração</label>
-      <label><input type="radio" name="mode" value="evolution"> Cadeia Evolutiva</label>
-    </div>
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <h1>PokéGuess</h1>
+      <p>Consegues adivinhar o Pokémon a partir de pistas progressivas?</p>
+      <a href="jogo.html" class="btn">Jogar Agora</a>
+    </section>
 
-    <p>Dificuldade:</p>
-    <div>
-      <label><input type="radio" name="difficulty" value="easy" checked> Fácil</label>
-      <label><input type="radio" name="difficulty" value="medium"> Médio</label>
-      <label><input type="radio" name="difficulty" value="hard"> Difícil</label>
-    </div>
-
-    <button id="btn-start">Iniciar Jogo</button>
-    <button id="btn-history">Histórico</button>
-
-  </div>
-
-
-  <!-- ECRÃ DE JOGO -->
-  <div id="screen-game" class="screen">
-    <div id="hud">
-      <span>Vidas: <span id="lives">3 vidas</span></span>
-      <span>Pontos: <span id="score">0</span></span>
-      <span>Streak: <span id="streak">0</span></span>
-    </div>
-
-    <div id="timer-bar-container">
-      <div id="timer-bar"></div>
-    </div>
-
-    <span id="timer-text">--s</span>
-
-    <div id="game-area">
-    <div id="game-content"></div>
-    <div id="game-right">
-    <div id="answer-zone">
-      <input type="text" id="answer-input" placeholder="Nome do Pokémon..." autocomplete="off">
-      <button id="btn-submit">Responder(Enter)</button>
-      <button id="btn-hint">Pista(H)</button>
-    </div>
-
-    <div id="feedback" class="hidden"></div>
-
-    <button id="btn-quit">Abandonar</button>
+    <!-- Modos -->
+    <section class="modos">
+      <h2>Modos de Jogo</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Silhueta</h3>
+          <p>Adivinha o Pokémon pela sua silhueta.</p>
+        </div>
+        <div class="card">
+          <h3>Estatísticas</h3>
+          <p>Adivinha pelo HP, ataque, defesa e velocidade.</p>
+        </div>
+        <div class="card">
+          <h3>Tipo + Geração</h3>
+          <p>Escolhe entre 4 opções com base no tipo e geração.</p>
+        </div>
+        <div class="card">
+          <h3>Cadeia Evolutiva</h3>
+          <p>Adivinha a forma anterior ou seguinte do Pokémon.</p>
+        </div>
       </div>
-    </div>
-  </div>
+    </section>
+  </main>
 
-  <!-- ECRÃ DE HISTÓRICO -->
-  <div id="screen-history" class="screen">
-    <h1>Histórico</h1>
-    <button id="btn-export-csv">Exportar CSV</button>
-    <div id="history-list"></div>
-    <button id="btn-back-history">Voltar</button>
-  </div>
-
-  <!-- ECRÃ DE FIM DE JOGO -->
-  <div id="screen-gameover" class="screen">
-    <h1 id="gameover-title">Fim de Jogo!</h1>
-    <p id="gameover-score"></p>
-    <p id="gameover-stats"></p>
-    <button id="btn-play-again">Jogar de Novo</button>
-    <button id="btn-menu">Menu Principal</button>
-  </div>
-
-    <!-- SCRIPTS -->
-  <script src="api.js"></script>
-  <script src="storage.js"></script>
-  <script src="engine.js"></script>
-  <script src="modes.js"></script>
-  <script src="main.js"></script>
+  <footer>
+    <p>&copy; 2026 PokéGuess — Solano Quissanga</p>
+    <a href="privacidade.html">Política de Privacidade</a>
+  </footer>
 
 </body>
 </html>
