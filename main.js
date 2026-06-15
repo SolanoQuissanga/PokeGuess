@@ -1,5 +1,42 @@
 // main.js 
 
+// SONS - gerados com Web Audio API (sem ficheiros externos)
+function playSound(type) {
+  const settings = JSON.parse(localStorage.getItem('pokeguess_settings')) || {};
+  if (settings.sound === false) return; // som desligado nas definições
+
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  if (type === 'correct') {
+    osc.frequency.setValueAtTime(520, ctx.currentTime);
+    osc.frequency.setValueAtTime(660, ctx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.4);
+  } else if (type === 'wrong') {
+    osc.frequency.setValueAtTime(300, ctx.currentTime);
+    osc.frequency.setValueAtTime(200, ctx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.4);
+  } else if (type === 'gameover') {
+    osc.frequency.setValueAtTime(400, ctx.currentTime);
+    osc.frequency.setValueAtTime(300, ctx.currentTime + 0.2);
+    osc.frequency.setValueAtTime(200, ctx.currentTime + 0.4);
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.6);
+  }
+}
+
 // Função para mostrar um ecrã e esconder os outros
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => {
@@ -182,10 +219,12 @@ on('roundEnd', async (isCorrect, points) => {
     feedback.className = 'feedback-correct';
     feedback.textContent = `Correto! +${points} pontos`;
     revealPokemon();
+    playSound('correct');
   } else {
     feedback.className = 'feedback-wrong';
     feedback.textContent = `Errado! Era ${round.pokemon.name}!`;
     revealPokemon();
+    playSound('wrong');
   }
 
   updateHUD();
@@ -205,6 +244,7 @@ on('gameOver', () => {
   document.getElementById('gameover-score').textContent = `Pontuação: ${s.score} pontos`;
   document.getElementById('gameover-stats').textContent = `Acertos: ${s.hits} | Melhor streak: ${s.maxStreak}`;
   showScreen('screen-gameover');
+  playSound('gameover');
 });
 
 // Histórico
@@ -230,3 +270,37 @@ document.getElementById('btn-export-csv').addEventListener('click', exportCSV);
 
 //mostra o ecrã inicial ao carregar a página
 showScreen('screen-start');
+
+
+// Botão definições
+document.getElementById('btn-settings').addEventListener('click', () => {
+  // Carrega as definições guardadas
+  const settings = JSON.parse(localStorage.getItem('pokeguess_settings')) || {};
+  if (settings.name) document.getElementById('input-name').value = settings.name;
+  if (settings.difficulty) document.getElementById('input-difficulty').value = settings.difficulty;
+  if (settings.time) document.getElementById('input-time').value = settings.time;
+  document.getElementById('input-sound').checked = settings.sound !== false;
+
+  showScreen('screen-settings');
+});
+
+// Botão voltar das definições
+document.getElementById('btn-back-settings').addEventListener('click', () => {
+  showScreen('screen-start');
+});
+
+// Guardar definições
+document.getElementById('form-settings').addEventListener('submit', (e) => {
+  e.preventDefault(); // evita que a página recarregue
+
+  const settings = {
+    name:       document.getElementById('input-name').value,
+    difficulty: document.getElementById('input-difficulty').value,
+    time:       document.getElementById('input-time').value,
+    sound:      document.getElementById('input-sound').checked,
+  };
+
+  localStorage.setItem('pokeguess_settings', JSON.stringify(settings));
+  alert('Definições guardadas!');
+  showScreen('screen-start');
+});
