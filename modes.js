@@ -1,3 +1,20 @@
+function getGenNumber(species) {
+  const roman = species.generation.name.split('-')[1].toUpperCase();
+  const map = { I:1, II:2, III:3, IV:4, V:5, VI:6, VII:7, VIII:8, IX:9 };
+  return map[roman];
+}
+
+function getSprite(pokemon) {
+  return pokemon.sprites.other['official-artwork'].front_default
+      || pokemon.sprites.front_default;
+}
+
+function flattenChain(node, result = []) {
+  result.push(node.species.name);
+  for (const next of node.evolves_to) flattenChain(next, result);
+  return result;
+}
+
 // MODO 1: SILHUETA
 // Mostra a imagem do Pokémon a preto (filter:brightness(0))
 function setupSilhouette(pokemon) {
@@ -5,7 +22,7 @@ function setupSilhouette(pokemon) {
 
   document.getElementById('game-content').innerHTML = `
     <div style="text-align:center">
-      <img id="poke-img" src="${img}" style="width:180px; filter:brightness(0)">
+      <img id="poke-img" src="${img}" style="filter:brightness(0)">
       <div id="hints"></div>
     </div>
   `;
