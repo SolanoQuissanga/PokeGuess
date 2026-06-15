@@ -2,8 +2,11 @@
 
 // Função para mostrar um ecrã e esconder os outros
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('active')
+  });
+  const target = document.getElementById(id);
+  target.classList.add('active');
 }
 
 // Variável para guardar o estado do modo atual
@@ -224,3 +227,6 @@ function showHistory() {
 }
 
 document.getElementById('btn-export-csv').addEventListener('click', exportCSV);
+
+//mostra o ecrã inicial ao carregar a página
+showScreen('screen-start');
