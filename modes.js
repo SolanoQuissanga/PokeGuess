@@ -121,7 +121,7 @@ function setupTypeGen(pokemon, species, pool) {
 // Chamada quando o jogador clica numa opção
 function handleChoice(nome) {
   // Desativa todos os botões para não poder clicar de novo
-  document.querySelectorAll('button').forEach(b => b.disabled = true);
+  document.querySelectorAll('#game-content button').forEach(b => b.disabled = true);
 
   const isCorrect = nome === getRound().pokemon.name;
   submitChoice(isCorrect);
