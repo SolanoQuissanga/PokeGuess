@@ -68,3 +68,20 @@ button:hover {
     font-weight: bold;
 }
 
+#btn-history {
+    background: var(--surface);
+    color: var(--text);
+    border: 2px solid var(--border);
+}
+
+#btn-hint {
+    background: var(--surface);
+    color: var(--text);
+    border: 2px solid var(--border);
+}
+
+#btn-submit {
+    background: var(--primary);
+    color:#000;
+    font-weight: bold;
+}
