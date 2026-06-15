@@ -86,3 +86,95 @@ button:hover {
     color:#000;
     font-weight: bold;
 }
+
+/* hud (ecrã de jogo) */
+#hub {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background: var(--surface);
+    border: var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+}
+
+/* timer */
+#timer-bar-container{
+    width: 100%;
+    height: 10px;
+    background: var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+#timer-bar {
+    height: 100%;
+    width: 100%;
+    background: var(--sucess);
+    border-radius: 999px;
+    /*transição - barra a diminuir */
+    transition: width 1s linear, background 1s linear;
+}
+
+/* area de conteudo de jogo */
+#game-content {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#answer-zone {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+#answer-input {
+    flex: 1;
+    padding: 0.6rem 1rem;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 1rem;
+}
+
+#answer-unput:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+/*feedback */
+#feedback {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    /* animação - surge com impacto */
+    animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+    0% { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.feedback-correct {
+    background: #0d2a1a;
+    color: var(--sucess);
+    border: 1px solid var(--sucess);
+}
+
+.feedback-wrong {
+    background: #2a0d0d;
+    color: var(--danger);
+    border: 1px solid var(--danger);
+}
