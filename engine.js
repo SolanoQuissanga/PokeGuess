@@ -44,8 +44,16 @@ async function initGame(mode, difficulty) {
 
   const cfg = DIFFICULTY[difficulty];
   if (cfg.gens === null) {
-    const total = await getTotalCount();
-    state.pool = Array.from({ length: total }, (_, i) => i + 1);
+    // Difícil: carrega nomes de todas as gerações
+    state.pool = [];
+    for (let g = 1; g <= 9; g++) {
+      try {
+        const names = await getPokemonByGeneration(g);
+        state.pool = state.pool.concat(names);
+      } catch {
+        break;
+      }
+    }
   } else {
     state.pool = [];
     for (const g of cfg.gens) {
@@ -69,7 +77,7 @@ async function pickPokemon() {
     const species = await getSpecies(pokemon.name);
     return { pokemon, species };
   } catch {
-    return pickPokemon(); // tenta outro se falhar
+    return pickPokemon();
   }
 }
 

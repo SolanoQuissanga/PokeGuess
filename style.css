@@ -67,7 +67,7 @@ footer {
 footer a { color: var(--muted); text-decoration: none; }
 footer a:hover { color: var(--primary); }
 
-/* MAIN - usado em todas as páginas */
+/* MAIN */
 main {
   flex: 1;
   max-width: 1000px;
@@ -96,12 +96,14 @@ main {
 .modos { padding: 2rem 0; }
 .modos h2 { font-size: 1.8rem; color: var(--primary); margin-bottom: 1.5rem; text-align: center; }
 
+/* .cards = contentor em grelha que organiza os .card em colunas */
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
 }
 
+/* .card = cada caixa individual */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -110,6 +112,20 @@ main {
 }
 .card h3 { color: var(--primary); margin-bottom: 0.5rem; }
 .card p { color: var(--muted); }
+
+/* ANIMAÇÃO - imagens da Pokédex rodam ao passar o rato */
+.card img {
+  transition: transform 0.1s;
+}
+
+.card img:hover {
+  animation: rodar 2s linear infinite;
+}
+
+@keyframes rodar {
+  0%   { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
 
 /* ECRÃS DO JOGO */
 .screen {

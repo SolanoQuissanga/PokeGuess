@@ -3,7 +3,7 @@
 // SONS - gerados com Web Audio API (sem ficheiros externos)
 function playSound(type) {
   const settings = JSON.parse(localStorage.getItem('pokeguess_settings')) || {};
-  if (settings.sound === false) return; // som desligado nas definições
+  if (settings.sound === false) return;
 
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
   const osc = ctx.createOscillator();
@@ -40,7 +40,7 @@ function playSound(type) {
 // Função para mostrar um ecrã e esconder os outros
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => {
-    s.classList.remove('active')
+    s.classList.remove('active');
   });
   const target = document.getElementById(id);
   target.classList.add('active');
@@ -55,7 +55,6 @@ document.getElementById('btn-start').addEventListener('click', async () => {
   const difficulty = document.querySelector('input[name="difficulty"]:checked').value;
 
   showScreen('screen-game');
-
   await initGame(mode, difficulty);
   await nextRound();
 });
@@ -78,12 +77,19 @@ document.getElementById('btn-quit').addEventListener('click', () => {
 });
 
 // Botões de fim de jogo
-document.getElementById('btn-play-again').addEventListener('click', () => showScreen('screen-start'));
-document.getElementById('btn-menu').addEventListener('click', () => showScreen('screen-start'));
+document.getElementById('btn-play-again').addEventListener('click', async () => {
+  const mode = getState().mode;
+  const difficulty = getState().difficulty;
+  clearSession();
+  showScreen('screen-game');
+  await initGame(mode, difficulty);
+  await nextRound();
+});
 
-
-
-
+document.getElementById('btn-menu').addEventListener('click', () => {
+  clearSession();
+  showScreen('screen-start');
+});
 
 // Atualiza as vidas, pontos e streak
 function updateHUD() {
@@ -99,22 +105,17 @@ on('tick', (segundosLeft, total) => {
   document.getElementById('timer-bar').style.width = pct + '%';
   document.getElementById('timer-text').textContent = segundosLeft + 's';
 
-  // Muda a cor conforme o tempo restante
   const bar = document.getElementById('timer-bar');
-  if (pct <= 25) bar.style.background = '#e74c3c';       // vermelho
-  else if (pct <= 50) bar.style.background = 'orange';   // laranja
-  else bar.style.background = '#2ecc71';                  // verde
+  if (pct <= 25) bar.style.background = '#e74c3c';
+  else if (pct <= 50) bar.style.background = 'orange';
+  else bar.style.background = '#2ecc71';
 });
-
-
-
 
 // Inicia uma nova ronda
 async function nextRound() {
   modeState = {};
   const mode = getState().mode;
 
-  // Mostra o input de texto (pode ter sido escondido no modo typegen)
   document.getElementById('answer-zone').style.display = 'flex';
   document.getElementById('answer-input').value = '';
   document.getElementById('feedback').className = 'hidden';
@@ -122,7 +123,6 @@ async function nextRound() {
 
   let pokemonData;
 
-  // Modo evolução pode precisar de tentar vários Pokémon
   if (mode === 'evolution') {
     let valid = false;
     while (!valid) {
@@ -147,9 +147,6 @@ async function nextRound() {
   document.getElementById('answer-input').focus();
 }
 
-
-
-
 // Submeter resposta com o botão ou Enter
 document.getElementById('btn-submit').addEventListener('click', submeterResposta);
 document.getElementById('answer-input').addEventListener('keydown', e => {
@@ -163,7 +160,6 @@ function submeterResposta() {
   const mode = getState().mode;
 
   if (mode === 'evolution') {
-    // Compara com a resposta guardada no modeState
     submitChoice(input.toLowerCase() === modeState.answer.toLowerCase());
   } else {
     submitAnswer(input);
@@ -206,10 +202,6 @@ function pedirPista() {
   }
 }
 
-
-
-
-
 // Chamado pelo motor quando a ronda termina
 on('roundEnd', async (isCorrect, points) => {
   const round = getRound();
@@ -229,7 +221,6 @@ on('roundEnd', async (isCorrect, points) => {
 
   updateHUD();
 
-  // Espera 2 segundos e passa para a próxima ronda
   await new Promise(r => setTimeout(r, 2000));
 
   if (getState().lives <= 0) {
@@ -239,14 +230,14 @@ on('roundEnd', async (isCorrect, points) => {
     document.getElementById('gameover-score').textContent = `Pontuação: ${s.score} pontos`;
     document.getElementById('gameover-stats').textContent = `Acertos: ${s.hits} | Melhor streak: ${s.maxStreak}`;
     showScreen('screen-gameover');
-  }else {
+  } else {
     await nextRound();
   }
 });
 
 // Chamado pelo motor quando o jogo termina
 on('gameOver', () => {
-  //tratado no roundend para mostar feedback antes
+  // tratado no roundEnd para mostrar feedback antes
 });
 
 // Histórico
@@ -260,29 +251,31 @@ function showHistory() {
     return;
   }
 
-  history.forEach(g => {
+const ordenado = [...history].sort((a,b) => b.score - a.score);
+
+ ordenado.forEach((g, i) => {
     const div = document.createElement('div');
-    div.style = 'padding:0.5rem; border-bottom:1px solid #2e2e50';
-    div.innerHTML = `<b>${g.date}</b> — ${g.mode} / ${g.difficulty} — <b>${g.score} pts</b>`;
+    div.style = 'padding:0.5rem; border-bottom:1px solid #2e2e50; display:flex; justify-content:space-between';
+    div.innerHTML = `
+      <span>#${i + 1} — ${g.date} — ${g.mode} / ${g.difficulty}</span>
+      <b style="color:var(--primary)">${g.score} pts</b>
+    `;
     list.appendChild(div);
   });
 }
 
 document.getElementById('btn-export-csv').addEventListener('click', exportCSV);
 
-//mostra o ecrã inicial ao carregar a página
+// Mostra o ecrã inicial ao carregar a página
 showScreen('screen-start');
-
 
 // Botão definições
 document.getElementById('btn-settings').addEventListener('click', () => {
-  // Carrega as definições guardadas
   const settings = JSON.parse(localStorage.getItem('pokeguess_settings')) || {};
   if (settings.name) document.getElementById('input-name').value = settings.name;
   if (settings.difficulty) document.getElementById('input-difficulty').value = settings.difficulty;
   if (settings.time) document.getElementById('input-time').value = settings.time;
   document.getElementById('input-sound').checked = settings.sound !== false;
-
   showScreen('screen-settings');
 });
 
@@ -293,7 +286,7 @@ document.getElementById('btn-back-settings').addEventListener('click', () => {
 
 // Guardar definições
 document.getElementById('form-settings').addEventListener('submit', (e) => {
-  e.preventDefault(); // evita que a página recarregue
+  e.preventDefault();
 
   const settings = {
     name:       document.getElementById('input-name').value,
