@@ -13,9 +13,6 @@ O código JavaScript foi dividido em 5 ficheiros com responsabilidades separadas
 -storage.js-persistência com localStorage e exportação CSV.
 -main.js-liga os eventos do HTML ao motor e gere a navegação entre ecrãs.
 
-Esta separação facilita a manutenção e a defesa oral, pois cada ficheiro tem uma função clara.
-
-
 Dificuldades encontradas
 
 Cadeia evolutiva: A PokéAPI devolve as evoluções em árvore recursiva. Implementei a função flattenChain para converter essa árvore numa lista simples e depois localizar o Pokémon atual para determinar se tem forma anterior ou seguinte.
