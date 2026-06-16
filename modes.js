@@ -118,6 +118,9 @@ async function setupEvolution(pokemon, species) {
   const chain = flattenChain(chainData.chain);
   const idx = chain.findIndex(n => n === pokemon.name);
 
+  // Se não encontrou na cadeia ou não tem evoluções, é inválido
+  if (idx === -1) return { valid: false };
+
   const hasPrev = idx > 0;
   const hasNext = idx < chain.length - 1;
 
