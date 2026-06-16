@@ -11,7 +11,7 @@
 
   <header>
     <nav>
-      <a href="index.html" class="logo-nav">PokéGuess</a>
+      <a href="index.html" class="logo">PokéGuess</a>
       <ul>
         <li><a href="index.html">Início</a></li>
         <li><a href="jogo.html">Jogar</a></li>
@@ -23,100 +23,104 @@
     </nav>
   </header>
 
-  <!-- ECRÃ INICIAL -->
-  <div id="screen-start" class="screen active">
-    <h1>PokéGuess</h1>
-    <p>Escolhe o modo de jogo:</p>
-    <div>
-      <label><input type="radio" name="mode" value="silhouette" checked> Silhueta</label>
-      <label><input type="radio" name="mode" value="stats"> Estatísticas</label>
-      <label><input type="radio" name="mode" value="typegen"> Tipo + Geração</label>
-      <label><input type="radio" name="mode" value="evolution"> Cadeia Evolutiva</label>
-    </div>
-    <p>Dificuldade:</p>
-    <div>
-      <label><input type="radio" name="difficulty" value="easy" checked> Fácil</label>
-      <label><input type="radio" name="difficulty" value="medium"> Médio</label>
-      <label><input type="radio" name="difficulty" value="hard"> Difícil</label>
-    </div>
-    <button id="btn-start">Iniciar Jogo</button>
-    <button id="btn-history">Histórico</button>
-    <button id="btn-settings">Definições</button>
-  </div>
+  <main>
 
-  <!-- ECRÃ DE JOGO -->
-  <div id="screen-game" class="screen">
-    <div id="hud">
-      <span>Vidas: <span id="lives">3 vidas</span></span>
-      <span>Pontos: <span id="score">0</span></span>
-      <span>Streak: <span id="streak">0</span></span>
+    <!-- ECRÃ INICIAL -->
+    <div id="screen-start" class="screen active">
+      <h1>PokéGuess</h1>
+      <p>Escolhe o modo de jogo:</p>
+      <div>
+        <label><input type="radio" name="mode" value="silhouette" checked> Silhueta</label>
+        <label><input type="radio" name="mode" value="stats"> Estatísticas</label>
+        <label><input type="radio" name="mode" value="typegen"> Tipo + Geração</label>
+        <label><input type="radio" name="mode" value="evolution"> Cadeia Evolutiva</label>
+      </div>
+      <p>Dificuldade:</p>
+      <div>
+        <label><input type="radio" name="difficulty" value="easy" checked> Fácil</label>
+        <label><input type="radio" name="difficulty" value="medium"> Médio</label>
+        <label><input type="radio" name="difficulty" value="hard"> Difícil</label>
+      </div>
+      <button id="btn-start">Iniciar Jogo</button>
+      <button id="btn-history">Histórico</button>
+      <button id="btn-settings">Definições</button>
     </div>
-    <div id="timer-bar-container">
-      <div id="timer-bar"></div>
-    </div>
-    <span id="timer-text">--s</span>
-    <div id="game-area">
-      <div id="game-content"></div>
-      <div id="game-right">
-        <div id="answer-zone">
-          <input type="text" id="answer-input" placeholder="Nome do Pokémon..." autocomplete="off">
-          <button id="btn-submit">Responder (Enter)</button>
-          <button id="btn-hint">Pista (H)</button>
+
+    <!-- ECRÃ DE JOGO -->
+    <div id="screen-game" class="screen">
+      <div id="hud">
+        <span>Vidas: <span id="lives">3 vidas</span></span>
+        <span>Pontos: <span id="score">0</span></span>
+        <span>Streak: <span id="streak">0</span></span>
+      </div>
+      <div id="timer-bar-container">
+        <div id="timer-bar"></div>
+      </div>
+      <span id="timer-text">--s</span>
+      <div id="game-area">
+        <div id="game-content"></div>
+        <div id="game-right">
+          <div id="answer-zone">
+            <input type="text" id="answer-input" placeholder="Nome do Pokémon..." autocomplete="off">
+            <button id="btn-submit">Responder (Enter)</button>
+            <button id="btn-hint">Pista (H)</button>
+          </div>
+          <div id="feedback" class="hidden"></div>
+          <button id="btn-quit">Abandonar</button>
         </div>
-        <div id="feedback" class="hidden"></div>
-        <button id="btn-quit">Abandonar</button>
       </div>
     </div>
-  </div>
 
-  <!-- ECRÃ DE HISTÓRICO -->
-  <div id="screen-history" class="screen">
-    <h1>Histórico</h1>
-    <button id="btn-export-csv">Exportar CSV</button>
-    <div id="history-list"></div>
-    <button id="btn-back-history">Voltar</button>
-  </div>
+    <!-- ECRÃ DE HISTÓRICO -->
+    <div id="screen-history" class="screen">
+      <h1>Histórico</h1>
+      <button id="btn-export-csv">Exportar CSV</button>
+      <div id="history-list"></div>
+      <button id="btn-back-history">Voltar</button>
+    </div>
 
-  <!-- ECRÃ DE DEFINIÇÕES -->
-  <div id="screen-settings" class="screen">
-    <h1 style="color:var(--primary)">Definições</h1>
-    <form id="form-settings" style="width:100%; max-width:400px; display:flex; flex-direction:column; gap:1rem">
-      <div style="display:flex; flex-direction:column; gap:0.3rem">
-        <label for="input-name">Nome do jogador</label>
-        <input type="text" id="input-name" placeholder="O teu nome..." maxlength="20" required
-               style="padding:0.6rem 1rem; background:var(--surface); border:2px solid var(--border); border-radius:8px; color:var(--text); font-size:1rem">
-      </div>
-      <div style="display:flex; flex-direction:column; gap:0.3rem">
-        <label for="input-difficulty">Dificuldade</label>
-        <select id="input-difficulty"
-                style="padding:0.6rem 1rem; background:var(--surface); border:2px solid var(--border); border-radius:8px; color:var(--text); font-size:1rem">
-          <option value="easy">Fácil</option>
-          <option value="medium">Médio</option>
-          <option value="hard">Difícil</option>
-        </select>
-      </div>
-      <div style="display:flex; flex-direction:column; gap:0.3rem">
-        <label for="input-time">Tempo por ronda (segundos)</label>
-        <input type="number" id="input-time" min="10" max="120" value="60" required
-               style="padding:0.6rem 1rem; background:var(--surface); border:2px solid var(--border); border-radius:8px; color:var(--text); font-size:1rem">
-      </div>
-      <div style="display:flex; align-items:center; gap:0.5rem">
-        <input type="checkbox" id="input-sound" checked style="width:18px; height:18px; cursor:pointer">
-        <label for="input-sound">Som ligado</label>
-      </div>
-      <button type="submit" id="btn-save-settings">Guardar</button>
-    </form>
-    <button id="btn-back-settings">Voltar</button>
-  </div>
+    <!-- ECRÃ DE DEFINIÇÕES -->
+    <div id="screen-settings" class="screen">
+      <h1 style="color:var(--primary)">Definições</h1>
+      <form id="form-settings" style="width:100%; max-width:400px; display:flex; flex-direction:column; gap:1rem">
+        <div style="display:flex; flex-direction:column; gap:0.3rem">
+          <label for="input-name">Nome do jogador</label>
+          <input type="text" id="input-name" placeholder="O teu nome..." maxlength="20" required
+                 style="padding:0.6rem 1rem; background:var(--surface); border:2px solid var(--border); border-radius:8px; color:var(--text); font-size:1rem">
+        </div>
+        <div style="display:flex; flex-direction:column; gap:0.3rem">
+          <label for="input-difficulty">Dificuldade</label>
+          <select id="input-difficulty"
+                  style="padding:0.6rem 1rem; background:var(--surface); border:2px solid var(--border); border-radius:8px; color:var(--text); font-size:1rem">
+            <option value="easy">Fácil</option>
+            <option value="medium">Médio</option>
+            <option value="hard">Difícil</option>
+          </select>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:0.3rem">
+          <label for="input-time">Tempo por ronda (segundos)</label>
+          <input type="number" id="input-time" min="10" max="120" value="60" required
+                 style="padding:0.6rem 1rem; background:var(--surface); border:2px solid var(--border); border-radius:8px; color:var(--text); font-size:1rem">
+        </div>
+        <div style="display:flex; align-items:center; gap:0.5rem">
+          <input type="checkbox" id="input-sound" checked style="width:18px; height:18px; cursor:pointer">
+          <label for="input-sound">Som ligado</label>
+        </div>
+        <button type="submit" id="btn-save-settings">Guardar</button>
+      </form>
+      <button id="btn-back-settings">Voltar</button>
+    </div>
 
-  <!-- ECRÃ DE FIM DE JOGO -->
-  <div id="screen-gameover" class="screen">
-    <h1 id="gameover-title">Fim de Jogo!</h1>
-    <p id="gameover-score"></p>
-    <p id="gameover-stats"></p>
-    <button id="btn-play-again">Jogar de Novo</button>
-    <button id="btn-menu">Menu Principal</button>
-  </div>
+    <!-- ECRÃ DE FIM DE JOGO -->
+    <div id="screen-gameover" class="screen">
+      <h1 id="gameover-title">Fim de Jogo!</h1>
+      <p id="gameover-score"></p>
+      <p id="gameover-stats"></p>
+      <button id="btn-play-again">Jogar de Novo</button>
+      <button id="btn-menu">Menu Principal</button>
+    </div>
+
+  </main>
 
   <footer>
     <p>&copy; 2026 PokéGuess — Solano Quissanga</p>
