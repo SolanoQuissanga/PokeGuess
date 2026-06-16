@@ -203,11 +203,10 @@ function pedirPista() {
 }
 
 // Chamado pelo motor quando a ronda termina
-// Chamado pelo motor quando a ronda termina
 on('roundEnd', async (isCorrect, points) => {
   const round = getRound();
   const feedback = document.getElementById('feedback');
-  const sprite = getSprite(round.pokemon);
+  const mode = getState().mode;
 
   if (isCorrect) {
     feedback.className = 'feedback-correct';
@@ -215,11 +214,21 @@ on('roundEnd', async (isCorrect, points) => {
     revealPokemon();
     playSound('correct');
   } else {
+    const nomeCorreto = mode === 'evolution' ? modeState.answer : round.pokemon.name;
+
+    // Vai buscar o sprite da resposta correta via API (já está em cache)
+    let spriteCorreto = '';
+    try {
+      const pokemonCorreto = await getPokemon(nomeCorreto);
+      spriteCorreto = getSprite(pokemonCorreto);
+    } catch {
+      spriteCorreto = '';
+    }
+
     feedback.className = 'feedback-wrong';
     feedback.innerHTML = `
-      Errado! Era ${round.pokemon.name}!
-      <br>
-      <img src="${sprite}" style="width:100px; margin-top:0.5rem">
+      Errado! A resposta era <b>${nomeCorreto}</b>!
+      ${spriteCorreto ? `<br><img src="${spriteCorreto}" style="width:100px; margin-top:0.5rem">` : ''}
     `;
     playSound('wrong');
   }
@@ -256,9 +265,9 @@ function showHistory() {
     return;
   }
 
-const ordenado = [...history].sort((a,b) => b.score - a.score);
+  const ordenado = [...history].sort((a, b) => b.score - a.score);
 
- ordenado.forEach((g, i) => {
+  ordenado.forEach((g, i) => {
     const div = document.createElement('div');
     div.style = 'padding:0.5rem; border-bottom:1px solid #2e2e50; display:flex; justify-content:space-between';
     div.innerHTML = `
