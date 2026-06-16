@@ -11,13 +11,12 @@ function getSprite(pokemon) {
 
 function flattenChain(node, result = []) {
   result.push(node.species.name);
-  
-  // Se tem mais que uma evolução (ramificação), escolhe uma aleatória
+
   if (node.evolves_to.length > 0) {
     const next = node.evolves_to[Math.floor(Math.random() * node.evolves_to.length)];
     flattenChain(next, result);
   }
-  
+
   return result;
 }
 
@@ -25,8 +24,8 @@ function flattenChain(node, result = []) {
 function setupSilhouette(pokemon) {
   const img = getSprite(pokemon);
   document.getElementById('game-content').innerHTML = `
-    <div style="text-align:center">
-      <img id="poke-img" src="${img}" style="filter:brightness(0)">
+    <div class="mode-center">
+      <img id="poke-img" src="${img}" class="silhouette-img">
       <div id="hints"></div>
     </div>
   `;
@@ -34,7 +33,7 @@ function setupSilhouette(pokemon) {
 
 function revealPokemon() {
   const img = document.getElementById('poke-img');
-  if (img) img.style.filter = 'brightness(1)';
+  if (img) img.classList.add('revealed');
 }
 
 function getHintSilhouette(pokemon, species, hintsUsed) {
@@ -56,16 +55,16 @@ function setupStats(pokemon) {
   };
 
   const rows = pokemon.stats.map(s =>
-    `<p style="display:flex; justify-content:space-between; padding:0.3rem 0; border-bottom:1px solid #2e2e50">
+    `<p class="stat-row">
       <span>${nomes[s.stat.name]}</span>
       <b>${s.base_stat}</b>
     </p>`
   ).join('');
 
   document.getElementById('game-content').innerHTML = `
-    <div style="width:100%">
+    <div class="mode-full">
       ${rows}
-      <div id="hints" style="margin-top:1rem"></div>
+      <div id="hints" class="hints-spacing"></div>
     </div>
   `;
 }
@@ -85,7 +84,6 @@ function setupTypeGen(pokemon, species, pool) {
   const gen  = getGenNumber(species);
   const tipo = pokemon.types.map(t => t.type.name).join(', ');
 
-  // Filtra apenas nomes (remove IDs numéricos)
   const poolNomes = pool.filter(n => isNaN(n));
 
   const errados = poolNomes
@@ -96,18 +94,15 @@ function setupTypeGen(pokemon, species, pool) {
   const opcoes = [pokemon.name, ...errados].sort(() => Math.random() - 0.5);
 
   const buttons = opcoes.map(nome =>
-    `<button 
-      onclick="handleChoice('${nome}')"
-      style="padding:0.6rem 1rem; margin:0.3rem; border-radius:8px;
-             background:#1a1a2e; color:#f0f0f0; border:2px solid #2e2e50; cursor:pointer">
+    `<button class="choice-btn" onclick="handleChoice('${nome}')">
       ${nome}
     </button>`
   ).join('');
 
   document.getElementById('game-content').innerHTML = `
-    <div style="text-align:center">
+    <div class="mode-center">
       <p>Tipo: <b>${tipo}</b> | Geração: <b>${gen}</b></p>
-      <div style="margin-top:1rem">${buttons}</div>
+      <div class="hints-spacing">${buttons}</div>
     </div>
   `;
 }
@@ -124,7 +119,6 @@ async function setupEvolution(pokemon, species) {
   const chain = flattenChain(chainData.chain);
   const idx = chain.findIndex(n => n === pokemon.name);
 
-  // Se não encontrou na cadeia ou não tem evoluções, é inválido
   if (idx === -1) return { valid: false };
 
   const hasPrev = idx > 0;
@@ -143,12 +137,12 @@ async function setupEvolution(pokemon, species) {
   const dirLabel = direction === 'prev' ? 'anterior' : 'seguinte';
 
   document.getElementById('game-content').innerHTML = `
-    <div style="text-align:center">
-      <img src="${getSprite(pokemon)}" style="width:150px">
-      <p style="margin-top:1rem">
+    <div class="mode-center">
+      <img src="${getSprite(pokemon)}" class="evolution-img">
+      <p class="hints-spacing">
         Qual é a forma <b>${dirLabel}</b> de <b>${pokemon.name}</b>?
       </p>
-      <div id="hints" style="margin-top:1rem"></div>
+      <div id="hints" class="hints-spacing"></div>
     </div>
   `;
 
