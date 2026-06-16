@@ -203,19 +203,24 @@ function pedirPista() {
 }
 
 // Chamado pelo motor quando a ronda termina
+// Chamado pelo motor quando a ronda termina
 on('roundEnd', async (isCorrect, points) => {
   const round = getRound();
   const feedback = document.getElementById('feedback');
+  const sprite = getSprite(round.pokemon);
 
   if (isCorrect) {
     feedback.className = 'feedback-correct';
-    feedback.textContent = `Correto! +${points} pontos`;
+    feedback.innerHTML = `Correto! +${points} pontos`;
     revealPokemon();
     playSound('correct');
   } else {
     feedback.className = 'feedback-wrong';
-    feedback.textContent = `Errado! Era ${round.pokemon.name}!`;
-    revealPokemon();
+    feedback.innerHTML = `
+      Errado! Era ${round.pokemon.name}!
+      <br>
+      <img src="${sprite}" style="width:100px; margin-top:0.5rem">
+    `;
     playSound('wrong');
   }
 
