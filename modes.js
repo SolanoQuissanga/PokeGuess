@@ -11,7 +11,13 @@ function getSprite(pokemon) {
 
 function flattenChain(node, result = []) {
   result.push(node.species.name);
-  for (const next of node.evolves_to) flattenChain(next, result);
+  
+  // Se tem mais que uma evolução (ramificação), escolhe uma aleatória
+  if (node.evolves_to.length > 0) {
+    const next = node.evolves_to[Math.floor(Math.random() * node.evolves_to.length)];
+    flattenChain(next, result);
+  }
+  
   return result;
 }
 
