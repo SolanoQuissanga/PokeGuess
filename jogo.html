@@ -79,37 +79,34 @@
       <button id="btn-back-history">Voltar</button>
     </div>
 
-    <!-- ECRÃ DE DEFINIÇÕES -->
-    <div id="screen-settings" class="screen">
-      <h1 style="color:var(--primary)">Definições</h1>
-      <form id="form-settings" style="width:100%; max-width:400px; display:flex; flex-direction:column; gap:1rem">
-        <div style="display:flex; flex-direction:column; gap:0.3rem">
-          <label for="input-name">Nome do jogador</label>
-          <input type="text" id="input-name" placeholder="O teu nome..." maxlength="20" required
-                 style="padding:0.6rem 1rem; background:var(--surface); border:2px solid var(--border); border-radius:8px; color:var(--text); font-size:1rem">
-        </div>
-        <div style="display:flex; flex-direction:column; gap:0.3rem">
-          <label for="input-difficulty">Dificuldade</label>
-          <select id="input-difficulty"
-                  style="padding:0.6rem 1rem; background:var(--surface); border:2px solid var(--border); border-radius:8px; color:var(--text); font-size:1rem">
-            <option value="easy">Fácil</option>
-            <option value="medium">Médio</option>
-            <option value="hard">Difícil</option>
-          </select>
-        </div>
-        <div style="display:flex; flex-direction:column; gap:0.3rem">
-          <label for="input-time">Tempo por ronda (segundos)</label>
-          <input type="number" id="input-time" min="10" max="120" value="60" required
-                 style="padding:0.6rem 1rem; background:var(--surface); border:2px solid var(--border); border-radius:8px; color:var(--text); font-size:1rem">
-        </div>
-        <div style="display:flex; align-items:center; gap:0.5rem">
-          <input type="checkbox" id="input-sound" checked style="width:18px; height:18px; cursor:pointer">
-          <label for="input-sound">Som ligado</label>
-        </div>
-        <button type="submit" id="btn-save-settings">Guardar</button>
-      </form>
-      <button id="btn-back-settings">Voltar</button>
+<!-- ECRÃ DE DEFINIÇÕES -->
+<div id="screen-settings" class="screen">
+  <h1>Definições</h1>
+  <form id="form-settings" class="settings-form">
+    <div class="form-group">
+      <label for="input-name">Nome do jogador</label>
+      <input type="text" id="input-name" placeholder="O teu nome..." maxlength="20" required>
     </div>
+    <div class="form-group">
+      <label for="input-difficulty">Dificuldade</label>
+      <select id="input-difficulty">
+        <option value="easy">Fácil</option>
+        <option value="medium">Médio</option>
+        <option value="hard">Difícil</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="input-time">Tempo por ronda (segundos)</label>
+      <input type="number" id="input-time" min="10" max="120" value="60" required>
+    </div>
+    <div class="form-checkbox">
+      <input type="checkbox" id="input-sound" checked>
+      <label for="input-sound">Som ligado</label>
+    </div>
+    <button type="submit" id="btn-save-settings">Guardar</button>
+  </form>
+  <button id="btn-back-settings">Voltar</button>
+</div>
 
     <!-- ECRÃ DE FIM DE JOGO -->
     <div id="screen-gameover" class="screen">
